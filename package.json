@@ -1,0 +1,6 @@
+{
+  "name": "cdn-for-sysfox",
+  "description": "CDN Unpkg&Jsdelivr",
+  "repository": "https://github.com/sysfox/cdn",
+  "version": "0.0.1"
+}
