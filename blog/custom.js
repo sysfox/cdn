@@ -7,6 +7,7 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
       if (hitokotoElement) {
         // 替换元素内容为获取的句子
         hitokotoElement.innerText = data.hitokoto;
+        console.log("默认一言已替换");
       }
     })
     .catch(console.error);
