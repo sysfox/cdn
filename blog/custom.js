@@ -1,6 +1,6 @@
 // 检查当前页面是否是首页
 if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-  // 延时 2 秒执行
+  // 延时 0.2 秒执行
   setTimeout(() => {
     // 使用 fetch 请求数据
     fetch('https://v1.hitokoto.cn')
