@@ -1,6 +1,7 @@
+// 以下用于Shiro主题首页默认一言替换
 // 检查当前页面是否是首页
 if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-  // 延时 0.2 秒执行
+  // 延时 0.5 秒执行
   setTimeout(() => {
     // 使用 fetch 请求数据
     fetch('https://v1.hitokoto.cn')
@@ -23,5 +24,5 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
       .catch(error => {
         console.error('请求失败：', error);
       });
-  }, 200); // 200 毫秒 = 0.2 秒
+  }, 500); // 500 毫秒 = 0.5 秒
 }
