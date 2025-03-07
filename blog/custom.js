@@ -23,5 +23,5 @@ if (window.location.pathname === '/' || window.location.pathname === '/index.htm
       .catch(error => {
         console.error('请求失败：', error);
       });
-  }, 2000); // 2000 毫秒 = 2 秒
+  }, 200); // 200 毫秒 = 0.2 秒
 }
