@@ -34,11 +34,10 @@ if (window.location.hostname.endsWith('.trfox.top')) {
     console.log('哎呀,本js文件仅供Teror Fox的网站使用,请自己适配啦');
     return;
   }
-  }
-  
-  if (isHomePage()) {
+  else if (isHomePage()) {
     // 改用 DOMContentLoaded 确保元素存在
     document.addEventListener('DOMContentLoaded', () => {
       replaceHitokoto();
     });
   }
+}
