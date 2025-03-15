@@ -23,7 +23,11 @@ const replaceHitokoto = async () => {
 
 // 主逻辑
 if (window.location.hostname.endsWith('.trfox.top')) {
-  if (!isBlogSubdomain()) return; // 提前退出非目标子域
+  if (!isBlogSubdomain()) {
+    console.log('哎呀,本js文件仅供Teror Fox的网站使用,请自己适配啦');
+    return;
+  }
+  }
   
   if (isHomePage()) {
     // 改用 DOMContentLoaded 确保元素存在
@@ -31,4 +35,3 @@ if (window.location.hostname.endsWith('.trfox.top')) {
       replaceHitokoto();
     });
   }
-}
