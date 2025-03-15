@@ -1,28 +1,34 @@
-// 以下用于Shiro主题首页默认一言替换
-// 检查当前页面是否是首页
-if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-  // 延时 0.5 秒执行
-  setTimeout(() => {
-    // 使用 fetch 请求数据
-    fetch('https://v1.hitokoto.cn')
-      .then(response => {
-        // 检查响应是否成功
-        if (!response.ok) {
-          throw new Error('网络响应失败');
-        }
-        return response.json(); // 解析 JSON 数据
-      })
-      .then(data => {
-        // 获取目标元素
-        const hitokotoElement = document.querySelector('small.text-center');
-        if (hitokotoElement) {
-          // 替换元素内容为获取的句子
-          hitokotoElement.innerText = data.hitokoto;
-          console.log("默认一言已替换");
-        }
-      })
-      .catch(error => {
-        console.error('请求失败：', error);
-      });
-  }, 500); // 500 毫秒 = 0.5 秒
+// 检查是否是 blog 子域名
+const isBlogSubdomain = () => window.location.hostname === 'blog.trfox.top';
+// 检查是否是博客首页
+const isHomePage = () => ['/', '/index.html'].includes(window.location.pathname);
+
+// 获取并替换一言
+const replaceHitokoto = async () => {
+  try {
+    const response = await fetch('https://v1.hitokoto.cn');
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const data = await response.json();
+    const hitokotoElement = document.querySelector('small.text-center');
+    
+    if (hitokotoElement) {
+      hitokotoElement.innerText = data.hitokoto;
+      console.log("默认一言已替换");
+    }
+  } catch (error) {
+    console.error('请求失败：', error);
+  }
+};
+
+// 主逻辑
+if (window.location.hostname.endsWith('.trfox.top')) {
+  if (!isBlogSubdomain()) return; // 提前退出非目标子域
+  
+  if (isHomePage()) {
+    // 改用 DOMContentLoaded 确保元素存在
+    document.addEventListener('DOMContentLoaded', () => {
+      replaceHitokoto();
+    });
+  }
 }
