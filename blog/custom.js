@@ -1,108 +1,31 @@
-// 域名检查函数
-const isBlogSubdomain = () => window.location.hostname === 'blog.trfox.top';
-const isHomePage = () => ['/', '/index.html'].includes(window.location.pathname);
-
-// SPA 路由监听逻辑 (带内存泄漏防护)
-let observer = null;
-const observeSPARouteChange = () => {
-  // 清理旧监听器
-  if (observer) {
-    observer.disconnect();
-    observer = null;
-  }
-
-  const targetNode = document.documentElement;
-  const config = { childList: true, subtree: true };
-  
-  const callback = (mutationsList) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'childList') {
-        clearTimeout(window._spaDebounce);
-        window._spaDebounce = setTimeout(() => {
-          checkAndReplaceHitokoto();
-        }, 100);
-      }
-    }
-  };
-
-  observer = new MutationObserver(callback);
-  observer.observe(targetNode, config);
-};
-
-// 带重试机制的替换逻辑
-const checkAndReplaceHitokoto = async () => {
-  let retryCount = 0;
-  const maxRetries = 3;
-  const DEFAULT_TEXT = "当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。";
-
-  while (retryCount < maxRetries) {
+// update time
+console.log("Script Last Updated At 20250405 19:22")
+// 创建定时器，每两秒检测一次
+setInterval(() => {
+  // 检查当前页面是否是首页
+  if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+    // 获取目标元素
     const hitokotoElement = document.querySelector('small.text-center');
     
-    // 元素存在性检查
-    if (!hitokotoElement) {
-      console.log(`元素未找到，正在重试 (${retryCount + 1}/${maxRetries})`);
-      retryCount++;
-      await new Promise(resolve => setTimeout(resolve, 500));
-      continue;
-    }
-
-    // 默认文本检查
-    if (hitokotoElement.innerText.trim() !== DEFAULT_TEXT) {
-      console.log('检测到非默认文本，跳过替换');
-      return;
-    }
-
-    try {
-      const response = await fetch('https://v1.hitokoto.cn');
-      if (!response.ok) throw new Error(`HTTP 错误! 状态码: ${response.status}`);
-      
-      const data = await response.json();
-      hitokotoElement.innerText = data.hitokoto;
-      console.log("默认一言已替换");
-      break; // 成功时退出循环
-    } catch (error) {
-      console.error(`请求失败 (尝试 ${retryCount + 1}/${maxRetries}):`, error);
-      retryCount++;
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    // 如果元素存在且内容为指定文本
+    if (hitokotoElement && hitokotoElement.innerText === '当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。') {
+      // 使用 fetch 请求数据
+      fetch('https://v1.hitokoto.cn')
+        .then(response => {
+          // 检查响应是否成功
+          if (!response.ok) {
+            throw new Error('网络响应失败');
+          }
+          return response.json(); // 解析 JSON 数据
+        })
+        .then(data => {
+          // 替换元素内容为获取的句子
+          hitokotoElement.innerText = data.hitokoto;
+          console.log("检测到默认文本，已替换为一言");
+        })
+        .catch(error => {
+          console.error('请求失败：', error);
+        });
     }
   }
-};
-
-// 主执行逻辑
-if (typeof window !== 'undefined' && window.location.hostname.endsWith('.trfox.top')) {
-  // 服务端渲染保护
-  if (typeof document === 'undefined') return;
-
-  // 域名过滤
-  if (!isBlogSubdomain()) {
-    console.log('本脚本仅限 blog 子域名使用');
-    return;
-  }
-
-  // 初始化流程
-  const init = () => {
-    checkAndReplaceHitokoto();
-    observeSPARouteChange();
-    document.addEventListener('scroll', checkAndReplaceHitokoto);
-  };
-
-  // 加载时机处理
-  if (document.readyState === 'complete') {
-    init();
-  } else {
-    document.addEventListener('DOMContentLoaded', init);
-  }
-
-  // 清理逻辑
-  window.addEventListener('beforeunload', () => {
-    observer?.disconnect();
-    document.removeEventListener('scroll', checkAndReplaceHitokoto);
-  });
-
-  // Next.js 快速刷新处理
-  if (module.hot) {
-    module.hot.dispose(() => {
-      window.location.reload();
-    });
-  }
-}
+}, 2000); // 2000 毫秒 = 2 秒
