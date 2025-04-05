@@ -30,10 +30,6 @@ setInterval(() => {
       } else {
         console.log("目标元素存在，但内容不是默认文本，跳过替换");
       }
-    } else {
-      console.log("在首页但未找到 small.text-center 元素");
-    }
-  } else {
-    console.log("当前页面不是首页，跳过检测");
-  }
-}, 2000); // 2000 毫秒 = 2 秒
+    } 
+  } 
+}, 1000); // 1000 毫秒 = 1 秒
