@@ -7,9 +7,7 @@ setInterval(() => {
     
     if (hitokotoElement) {
       // 检查内容是否为默认文本
-      if (hitokotoElement.innerText === '当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。') {
-        console.log("检测到默认文本，正在请求一言...");
-        
+      if (hitokotoElement.innerText === '当第一颗卫星飞向大气层外，我们便以为自己终有一日会征服宇宙。') {        
         // 使用 fetch 请求数据
         fetch('https://v1.hitokoto.cn')
           .then(response => {
@@ -27,8 +25,6 @@ setInterval(() => {
           .catch(error => {
             console.error('一言请求失败：', error);
           });
-      } else {
-        console.log("目标元素存在，但内容不是默认文本，跳过替换");
       }
     } 
   } 
