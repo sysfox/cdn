@@ -1,0 +1,12 @@
+{
+  "linkMappings": [
+    {
+      "source": "https://www.cnblogs.com/sysfox/p/18373994",
+      "target": "https://blog.trfox.top/posts/site/hello-world"
+    },
+    {
+      "source": "https://www.cnblogs.com/sysfox/p/18835146",
+      "target": "https://blog.trfox.top/posts/site/comeback"
+    }
+  ]
+}
