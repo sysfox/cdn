@@ -1,6 +1,11 @@
 {
   "friends": [
     [
+      "茗辰原",
+      "https://mingcy.cn",
+      "https://mingcy.cn/image/mcy.png"
+    ],
+    [
       "SnowyKami OS",
       "https://blog.skfm.me/",
       "https://cdn.liteyuki.org/snowykami/avatar.jpg"
@@ -44,11 +49,6 @@
       "砂纸の小屋",
       "https://blog.dimeta.top",
       "https://blog.dimeta.top/upload/avatar.jpg"
-    ],
-    [
-      "レムりん",
-      "https://remrin.dev",
-      "https://cravatar.cn/avatar/0b4213f27a2a9401210b39cc21906624?s=800"
     ]
   ]
 }
