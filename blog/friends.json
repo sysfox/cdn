@@ -1,6 +1,16 @@
 {
   "friends": [
     [
+      "葱苓小筑",
+      "https://blog.ciraos.top",
+      "https://mx.ciraos.top/api/v2/objects/avatar/ufh295h43mly31gmw0.avif"
+    ],
+    [
+      "纸鹿本鹿",
+      "https://blog.zhilu.site/",
+      "https://www.zhilu.site/api/avatar.png"
+    ],
+    [
       "茗辰原",
       "https://mingcy.cn",
       "https://mingcy.cn/image/mcy.png"
@@ -39,16 +49,6 @@
       "天翔TNXG",
       "https://tnxgmoe.com/",
       "https://tnxgmoe.com/_next/image?url=https%3A%2F%2Fapi-space.tnxg.top%2Favatar%3Fs%3Dqq&w=640&q=75"
-    ],
-    [
-      "Innei",
-      "https://innei.in/",
-      "https://innei.in/_next/image?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FInnei%2Fstatic%40master%2Favatar.png&w=640&q=75"
-    ],
-    [
-      "砂纸の小屋",
-      "https://blog.dimeta.top",
-      "https://blog.dimeta.top/upload/avatar.jpg"
     ]
   ]
 }
