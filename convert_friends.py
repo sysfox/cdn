@@ -3,67 +3,45 @@ import json
 from datetime import datetime
 
 def convert_friends_data():
-    # 获取原始API数据
-    api_url = "https://mx.trfox.top/api/v3/links"
-    
-    # 添加常见的请求头
+    base_url = "https://mx.trfox.top/api/v3/links"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.9",
         "Referer": "https://mx.trfox.top/",
-        "Origin": "https://mx.trfox.top",
-        "Connection": "keep-alive",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin"
+        "Origin": "https://mx.trfox.top"
     }
     
+    all_friends = []
+    page = 1
+    total_pages = None
+
     try:
-        response = requests.get(api_url, headers=headers, timeout=10)
-        response.raise_for_status()  # 如果请求失败会抛出HTTPError
-        
-        data = response.json()
-        
-        # 转换数据格式
-        converted = {"friends": []}
-        
-        for friend in data.get("data", []):
-            if friend.get("hide", False):
-                continue
+        while True:
+            # 带分页参数请求
+            response = requests.get(base_url, params={"page": page}, headers=headers, timeout=10)
+            response.raise_for_status()
+            data = response.json()
             
-            name = friend.get("name", "")
-            url = friend.get("url", "")
-            avatar = friend.get("avatar", "")
+            # 首次请求时获取总页数
+            if total_pages is None:
+                total_pages = data.get("meta", {}).get("pagination", {}).get("total_pages", 1)
             
-            if name and url:  # 确保必要字段存在
-                converted["friends"].append([name, url, avatar])
+            # 处理当前页数据
+            for friend in data.get("data", []):
+                if not friend.get("hide", False):  # 过滤隐藏的链接
+                    name = friend.get("name", "")
+                    url = friend.get("url", "")
+                    avatar = friend.get("avatar", "")
+                    if name and url:  # 确保必要字段存在
+                        all_friends.append([name, url, avatar])
+            
+            # 判断是否还有下一页
+            if page >= total_pages:
+                break
+            page += 1
         
-        return converted
+        return {"friends": all_friends}
     
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         print(f"Error fetching data: {str(e)}")
         return None
-    except json.JSONDecodeError:
-        print("Error decoding JSON response")
-        return None
-
-def save_to_file(data, filename="blog/friends.json"):
-    try:
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        return True
-    except IOError as e:
-        print(f"Error saving file: {str(e)}")
-        return False
-
-if __name__ == "__main__":
-    print(f"Starting conversion at {datetime.now().isoformat()}")
-    converted_data = convert_friends_data()
-    if converted_data:
-        if save_to_file(converted_data):
-            print("Conversion and save completed successfully")
-        else:
-            print("Conversion succeeded but save failed")
-    else:
-        print("Conversion failed")
