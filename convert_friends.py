@@ -4,7 +4,7 @@ from datetime import datetime
 
 def convert_friends_data():
     # 获取原始API数据
-    api_url = "https://mx.trfox.top/api/v2/links"
+    api_url = "https://mx.trfox.top/api/v3/links"
     
     # 添加常见的请求头
     headers = {
